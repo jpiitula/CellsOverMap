@@ -1,0 +1,27 @@
+The remaining troublespots of CelloMap
+
+o [jpiitula] Allow external style and code
+   Either in sibling files or at specified URL.
+
+o [jpiitula] Match map region to data by default
+   Allow options, warn if much data is outside specified range.
+
+o [jpiitula] Label map coordinates more intuitively
+   Vertical and horizontal, maybe, or at least show which is which and
+   which way it grows.
+o [jpiitula] Label range controls in a less insane way
+   "X range ----- middle ---- width" is just awful
+
+
+o [jpiitula] Assign a license to the software
+   Thinking of AGPL, but there was something about JavaScript
+   specifically. Possible a Lesser AGPL would be good enough.
+
+o [jpiitula] Implement sampling controls
+   To reduce the amount of visible data. Should work by CSS. Most
+   coordinate actions would simply reveal all points again,
+   re-sampling would simply sample from all points again, and there
+   would be two of these: sample all data, sample each cell (can it be
+   some sort of radio control? at most one option selected?), with
+   reasonable fixed probabilities, and that's it.
+

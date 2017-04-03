@@ -1,0 +1,53 @@
+table { /* not sure if sizes on table and td have any effect */
+    table-layout: fixed;
+    max-width: 50em;
+    overflow: scroll;
+}
+
+td {
+    border: 2px solid;
+    height: 5em;
+    width: 10em;
+    overflow: hidden;
+}
+
+ul { /* table cells contain these */
+    margin: 0;
+    padding: 1ex;
+    height: 5em; /* does this force fixed height? it does! */
+    width: 5em; /* this seems to force fixed-width table cells! */
+    overflow: auto;
+}
+
+li {
+    list-style: none;
+}
+
+dl { /* info boxes contain these */
+    margin: 0;
+    height: 5em;
+    width: 20em;
+    overflow: auto;
+}
+
+dt label {
+    font-weight: bold;
+}
+
+dt, dd {
+    display: inline;
+    margin-left: 0; /* this removed whitespace before dd */
+}
+
+dt:first-child:after { /* item itself and its cell */
+    content: " @ ";
+}
+
+dt:after {
+    content: " = ";
+}
+
+dd:after {
+    content: "\a";
+    white-space: pre;
+}

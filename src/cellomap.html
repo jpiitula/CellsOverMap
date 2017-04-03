@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cells over Map 0.1</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h1>Cells over Map</h1>
+
+    <div>
+      Rows: <input id="rows" type="range" min="1", max="9" value="2">
+      Columns: <input id="cols" type="range" min="1", max="9" value="3">
+    </div>
+    <div>
+      X range:
+      <!-- should set these according to initial ranges -->
+      <span><input id="midx" type="range" min="{MinMidX}" max="{MaxMidX}" value="{ValMidX}" step="{StepMidX}"> middle</span>
+      <span><input id="widx" type="range" min="{MinWidX}" max="{MaxWidX}" value="{ValWidX}" step="{StepWidX}"> width</span>
+    </div>
+    <div>
+      Y range:
+      <span><input id="midy" type="range" min="{MinMidY}" max="{MaxMidY}" value="{ValMidY}" step="{StepMidY}"> middle</span>
+      <span><input id="widy" type="range" min="{MinWidY}" max="{MaxWidY}" value="{ValWidY}" step="{StepWidY}"> width</span>
+    </div>
+    <div> <!-- may acquire height and width -->
+      <table id="view">
+	<!-- generate an initial number of clusters (rows × columns) but
+	     make it manipulable so the cells fill programmatically -->
+	<tbody></tbody>
+      </table>
+    </div>
+    <table>
+      <tbody>
+	<tr>
+	  <td id="meta1"></td>
+	  <td id="meta2"></td>
+	</tr>
+      </tbody>
+    </table>
+  </body>
+  <script>
+    // data points initially in one cell (one row, one column)
+    // but the shape is reset already before table is filled
+    var document_data = [ [ [
+<!--[DATA]-->
+    ] ] ];
+  </script>
+  <!--[STYLE]-->
+  <!--[CODE]-->
+</html>
