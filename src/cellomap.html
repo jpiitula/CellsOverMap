@@ -6,22 +6,25 @@
   </head>
   <body>
     <h1>Cells over Map</h1>
+    <table id="area">
+      <tr>
+	<td>x mid &amp; width</td>
+	<!-- should set these according to initial ranges -->
+	<td><input id="midx" type="range" min="{MinMidX}" max="{MaxMidX}" value="{ValMidX}" step="{StepMidX}"></td>
+	<td><input id="widx" type="range" min="{MinWidX}" max="{MaxWidX}" value="{ValWidX}" step="{StepWidX}"></td>
+      </tr>
+      <tr>
+	<td>y mid &amp; width</td>
+	<td><input id="midy" type="range" min="{MinMidY}" max="{MaxMidY}" value="{ValMidY}" step="{StepMidY}"></td>
+	<td><input id="widy" type="range" min="{MinWidY}" max="{MaxWidY}" value="{ValWidY}" step="{StepWidY}"></td>
+      </tr>
+      <tr>
+	<td>m × n</td>
+	<td><input id="rows" type="range" min="1", max="9" value="2"></td>
+	<td><input id="cols" type="range" min="1", max="9" value="3"></td>
+      </tr>
+    </table>
 
-    <div>
-      Rows: <input id="rows" type="range" min="1", max="9" value="2">
-      Columns: <input id="cols" type="range" min="1", max="9" value="3">
-    </div>
-    <div>
-      X range:
-      <!-- should set these according to initial ranges -->
-      <span><input id="midx" type="range" min="{MinMidX}" max="{MaxMidX}" value="{ValMidX}" step="{StepMidX}"> middle</span>
-      <span><input id="widx" type="range" min="{MinWidX}" max="{MaxWidX}" value="{ValWidX}" step="{StepWidX}"> width</span>
-    </div>
-    <div>
-      Y range:
-      <span><input id="midy" type="range" min="{MinMidY}" max="{MaxMidY}" value="{ValMidY}" step="{StepMidY}"> middle</span>
-      <span><input id="widy" type="range" min="{MinWidY}" max="{MaxWidY}" value="{ValWidY}" step="{StepWidY}"> width</span>
-    </div>
     <div> <!-- may acquire height and width -->
       <table id="view">
 	<!-- generate an initial number of clusters (rows × columns) but
@@ -29,7 +32,7 @@
 	<tbody></tbody>
       </table>
     </div>
-    <table>
+    <table id="info">
       <tbody>
 	<tr>
 	  <td id="meta1"></td>

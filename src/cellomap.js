@@ -41,9 +41,9 @@
 		    var stdy = (item[2] - miny) / leny;
 		    var r = clamp(Math.floor(stdx * m), 0, m - 1);
 		    var k = clamp(Math.floor(stdy * n), 0, n - 1);
-		    console.log('min-max-len of x', minx, maxx, lenx);
-		    console.log('min-max-len of y', miny, maxy, leny);
-		    console.log('std x, y; r, k', stdx, stdy, r, k);
+		    // console.log('min-max-len of x', minx, maxx, lenx);
+		    // console.log('min-max-len of y', miny, maxy, leny);
+		    // console.log('std x, y; r, k', stdx, stdy, r, k);
                     it[r][k].push(item); }) }) });
         return it;
     }

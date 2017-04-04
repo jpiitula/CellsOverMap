@@ -1,17 +1,34 @@
-table { /* not sure if sizes on table and td have any effect */
+h1 {
+    display: inline;
+}
+
+table#area {
+    display: inline;
+}
+
+table#view { /* not sure if sizes on table and td have any effect */
     table-layout: fixed;
     max-width: 50em;
     overflow: scroll;
 }
 
-td {
+table#view td {
     border: 2px solid;
     height: 5em;
     width: 10em;
     overflow: hidden;
 }
 
-ul { /* table cells contain these */
+table#info { display: inline; } /* um, why */
+
+table#info td {
+    border: 2px solid;
+    height: 5em;
+    width: 10em;
+    overflow: hidden;
+}
+
+ul { /* table#view cells contain these */
     margin: 0;
     padding: 1ex;
     height: 5em; /* does this force fixed height? it does! */
