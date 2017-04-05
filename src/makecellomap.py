@@ -11,10 +11,10 @@ def arguments():
     Turn a JSON set of labeled points into an interactive viewer
     of the points in cells laid over a rectangular region of an
     underlying map. Outliers will be clamped into the cells.''')
-    parser.add_argument('--xmin', default = 0.0, type = float, help = 'minimum x-coordinate')
-    parser.add_argument('--xmax', default = 1.0, type = float, help = 'maximum x-coordinate')
-    parser.add_argument('--ymin', default = 0.0, type = float, help = 'minimum y-coordinate')
-    parser.add_argument('--ymax', default = 1.0, type = float, help = 'maximum y-coordinate')
+    parser.add_argument('--xmin', type = float, help = 'minimum x-coordinate')
+    parser.add_argument('--xmax', type = float, help = 'maximum x-coordinate')
+    parser.add_argument('--ymin', type = float, help = 'minimum y-coordinate')
+    parser.add_argument('--ymax', type = float, help = 'maximum y-coordinate')
     parser.add_argument('data', help = 'JSON file')
     return parser.parse_args()
 
@@ -25,19 +25,10 @@ def pieces(self):
     code = open(os.path.join(home, 'cellomap.js')).read()
     return page, style, code
 
-def midwid(begin, end):
-    '''Let user adjust a range (in case the data is not distributed as expected),
-    by controlling midpoint or width of the range to a limited extent.'''
-
-    if not begin < end: raise Exception()
-    wid = end - begin
-    mid = begin + wid/2
-    minmid, maxmid = begin - wid/2, end + wid/2
-    minwid, maxwid = wid/2, wid * 2
-    return minmid, mid, maxmid, minwid, wid, maxwid
-
 def load(filename):
-    '''Exits with a message in stderr if there are problems.'''
+    '''Returns the data, or exits with a message in stderr if there are
+    problems loading the data or the data is not as expected.'''
+
     try:
         data = json.load(open(filename))
     except ValueError:
@@ -70,6 +61,44 @@ def load(filename):
 
     return data
 
+def limits(data, args):
+    '''Return xmin, xmax, ymin, ymax for data. Could do something more
+    clever later but this will have to do as limits for now.'''
+
+    if data:
+        xmin = min(x for u, x, y, o in data) if args.xmin is None else args.xmin
+        xmax = max(x for u, x, y, o in data) if args.xmax is None else args.xmax
+        ymin = min(y for u, x, y, o in data) if args.ymin is None else args.ymin
+        ymax = max(y for u, x, y, o in data) if args.ymax is None else args.ymax
+    else:
+        xmin, xmax, ymin, ymax = args.xmin, args.xmax, args.ymin, args.ymax
+
+    # should check here that all four limits are reasonable - would
+    # have been easier to insist on some data and not allow user to
+    # set limits at all - oh, must also insist on non-empty ranges!
+
+    return xmin, xmax, ymin, ymax
+
+def middle(begin, end):
+    '''Return the minimum and maximum for a midpoint range. Let HTML set
+    the default midpoint at the middle by default and allow "any" step
+    there.'''
+
+    if not begin < end: raise ValueError()
+    midmin = begin - (end - begin)/2
+    midmax = end + (end - begin)/2
+    return midmin, midmax
+
+def width(begin, end):
+    '''Return the minimum and maximum for a width range. Choose them so
+    that default width is at the middle, and let HTML set it there by
+    default; allow "any" step there.'''
+
+    if not begin < end: raise ValueError()
+    widmin = 0.25 * (end - begin)
+    widmax = 1.75 * (end - begin)
+    return widmin, widmax
+
 def main():
     args = arguments()
 
@@ -77,16 +106,15 @@ def main():
 
     page, style, code = pieces(sys.argv[0])
 
-    minmx, mx, maxmx, minwx, wx, maxwx = midwid(args.xmin, args.xmax)
-    minmy, my, maxmy, minwy, wy, maxwy = midwid(args.ymin, args.ymax)
-    page = page.format(MinMidX = minmx, MaxMidX = maxmx, ValMidX = mx,
-                       MinWidX = minwx, MaxWidX = maxwx, ValWidX = wx,
-                       MinMidY = minmy, MaxMidY = maxmy, ValMidY = my,
-                       MinWidY = minwy, MaxWidY = maxwy, ValWidY = wy,
-                       StepMidX = (maxmx - minmx) / 10,
-                       StepWidX = (maxwx - minwx) / 10,
-                       StepMidY = (maxmy - minmy) / 10,
-                       StepWidY = (maxwy - minwy) / 10)
+    xmin, xmax, ymin, ymax = limits(data, args)
+    mxmin, mxmax = middle(xmin, xmax)
+    mymin, mymax = middle(ymin, ymax)
+    wxmin, wxmax = width(xmin, xmax)
+    wymin, wymax = width(ymin, ymax)
+    page = page.format(MinMidX = mxmin, MaxMidX = mxmax,
+                       MinWidX = wxmin, MaxWidX = wxmax,
+                       MinMidY = mymin, MaxMidY = mymax,
+                       MinWidY = wymin, MaxWidY = wymax)
 
     data = ',\n'.join(json.dumps(datum, ensure_ascii = False)
                       for datum in data)

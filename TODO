@@ -1,14 +1,15 @@
 The remaining troublespots of CelloMap
 
-o [jpiitula] Allow external style and code
-   Either in sibling files or at specified URL.
-
-o [jpiitula] Match map region to data by default
-   Allow options, warn if much data is outside specified range.
-
 o [jpiitula] Label map coordinates more intuitively
    Vertical and horizontal, maybe, or at least show which is which and
    which way it grows.
+
+o [jpiitula] Allow external style and code
+   Either in sibling files or at specified URL.
+
+o [jpiitula] Check map region limits
+   Reject unless min before max, maybe warn if much data is outside
+   specified range (allowing options so can happen).
 
 o [jpiitula] Assign a license to the software
    Thinking of AGPL, but there was something about JavaScript
