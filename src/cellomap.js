@@ -144,6 +144,10 @@
 	}
     }
 
+    // these have style="display:none;" until script is allowed to run
+    document.getElementById("area").style.display = "";
+    document.getElementById("view").style.display = "";
+
     // showing selected items (but initially showing nothing)
     // Also: how does one make them appear side by side?
     var boxes = [document.createElement("div"), document.createElement("div") ];

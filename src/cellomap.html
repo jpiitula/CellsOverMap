@@ -6,7 +6,10 @@
   </head>
   <body>
     <h1>Cells over Map</h1>
-    <table id="area">
+    <noscript>
+      The table on this page would be created by a script.
+    </noscript>
+    <table id="area" style="display:none;">
       <tr>
 	<td><span class="math">x</span> mid &amp; width</td>
 	<td><input id="midx" type="range" min="{MinMidX}" max="{MaxMidX}" step="any"></td>
@@ -25,7 +28,7 @@
     </table>
 
     <div> <!-- may acquire height and width -->
-      <table id="view">
+      <table id="view" style="display:none;">
 	<!-- generate an initial number of clusters (rows × columns) but
 	     make it manipulable so the cells fill programmatically -->
 	<caption>
