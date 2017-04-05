@@ -107,7 +107,7 @@
 		    var r = cell.parentNode.rowIndex;
 		    var k = cell.cellIndex;
 		    var item = document_data[r][k][j];
-		    console.log([r, k, j, item[0], item[1], item[2]]);
+		    // console.log([r, k, j, item[0], item[1], item[2]]);
 		    var newlist = metadatalist(item, r, k);
 		    var oldlist = boxes[0].getElementsByTagName("dl")[0];
 		    var box = boxes[0]; boxes[0] = boxes[1]; boxes[1] = box;
@@ -120,7 +120,7 @@
 
     function metadatalist(item, r, k) { // render item metadata as dl
 	var list = document.createElement("dl");
-	dataentry(list, item[0], "(" + r + ", " + k + ")");
+	dataentry(list, item[0], "(" + (r + 1) + ", " + (k + 1) + ")");
 	dataentry(list, "(x,y)", "(" + item[1] + ", " + item[2] + ")");
 	for (var o in item[3]) {
 	    dataentry(list, o, item[3][o]);
