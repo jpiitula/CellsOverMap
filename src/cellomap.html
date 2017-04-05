@@ -8,17 +8,17 @@
     <h1>Cells over Map</h1>
     <table id="area">
       <tr>
-	<td>x mid &amp; width</td>
+	<td><span class="math">x</span> mid &amp; width</td>
 	<td><input id="midx" type="range" min="{MinMidX}" max="{MaxMidX}" step="any"></td>
 	<td><input id="widx" type="range" min="{MinWidX}" max="{MaxWidX}" step="any"></td>
       </tr>
       <tr>
-	<td>y mid &amp; width</td>
+	<td><span class="math">y</span> mid &amp; width</td>
 	<td><input id="midy" type="range" min="{MinMidY}" max="{MaxMidY}" step="any"></td>
 	<td><input id="widy" type="range" min="{MinWidY}" max="{MaxWidY}" step="any"></td>
       </tr>
       <tr>
-	<td>m × n</td>
+	<td><span class="math">m × n</span></td>
 	<td><input id="rows" type="range" min="1", max="9" value="2"></td>
 	<td><input id="cols" type="range" min="1", max="9" value="3"></td>
       </tr>
@@ -28,6 +28,10 @@
       <table id="view">
 	<!-- generate an initial number of clusters (rows × columns) but
 	     make it manipulable so the cells fill programmatically -->
+	<caption>
+	  <span id="down">↓ <span class="math">x ∼ 1, ..., m</span></span>
+	  <span><span class="math">y ~ 1, ..., n</span> →</span>
+	</caption>
 	<tbody></tbody>
       </table>
     </div>

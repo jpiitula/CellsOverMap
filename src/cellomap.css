@@ -3,8 +3,11 @@ h1 {
     padding-right: 1ex;
 }
 
+.math { font-style: italic; }
+
 table#area {
     display: inline;
+    text-align: right;
 }
 
 table#view { /* not sure if sizes on table and td have any effect */
@@ -12,6 +15,13 @@ table#view { /* not sure if sizes on table and td have any effect */
     max-width: 50em;
     overflow: scroll;
 }
+
+table#view caption {
+    text-align: left;
+    /* color: gray; */
+}
+
+#down { padding-right: 2em; }
 
 table#view td {
     border: 2px solid;
