@@ -9,9 +9,6 @@ o [jpiitula] Match map region to data by default
 o [jpiitula] Label map coordinates more intuitively
    Vertical and horizontal, maybe, or at least show which is which and
    which way it grows.
-o [jpiitula] Label range controls in a less insane way
-   "X range ----- middle ---- width" is just awful
-
 
 o [jpiitula] Assign a license to the software
    Thinking of AGPL, but there was something about JavaScript

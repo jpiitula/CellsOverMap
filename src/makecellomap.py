@@ -36,15 +36,46 @@ def midwid(begin, end):
     minwid, maxwid = wid/2, wid * 2
     return minmid, mid, maxmid, minwid, wid, maxwid
 
-def checkdata(data):
-    pass
+def load(filename):
+    '''Exits with a message in stderr if there are problems.'''
+    try:
+        data = json.load(open(filename))
+    except ValueError:
+        print('Unexpected data:',
+              'could not load data as JSON',
+              file = sys.stderr)
+        exit(1)
+
+    if not isinstance(data, list):
+        print('Unexpected data:',
+              'not a list',
+              file = sys.stderr)
+        exit(1)
+
+    try:
+        for label, x, y, o in data:
+            if not isinstance(label, str): raise ValueError()
+            if not isinstance(x, (int, float)): raise ValueError()
+            if not isinstance(y, (int, float)): raise ValueError()
+            if not isinstance(o, dict): raise ValueError()
+            if not all(isinstance(v, str) for v in o.values()): raise ValueError()
+    except ValueError:
+        print('Unexpected data:',
+              'a datum is not a list [label, x, y, { key : value, ... }]',
+              'containing a string, two numbers, and a key-value mapping',
+              'where each value is a string',
+              sep = '\n',
+              file = sys.stderr)
+        exit(1)
+
+    return data
 
 def main():
     args = arguments()
 
-    data = json.load(open(args.data))
+    data = load(args.data)
+
     page, style, code = pieces(sys.argv[0])
-    checkdata(data)
 
     minmx, mx, maxmx, minwx, wx, maxwx = midwid(args.xmin, args.xmax)
     minmy, my, maxmy, minwy, wy, maxwy = midwid(args.ymin, args.ymax)

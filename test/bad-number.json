@@ -1,0 +1,5 @@
+[
+[ "yksi",  1.2, 4.31, { "syllables" : "2", "vowels" : "2" } ],
+[ "kaksi", "2.15", 5.7, { "syllables" : "2" } ],
+[ "kolme", 3.14, 5.0, { "syllables" : "2", "pi" : "close" } ]
+]
