@@ -26,12 +26,19 @@ The transformation of the dataset into the HTML page is carried out by
 a Python script that basically checks some properties of the input,
 computes the overall coordinates of the data, and fills a template.
 
+Two improvements are in the mind of the developer: simple random
+sampling of the data (in the map or in the cells) to reduce clutter,
+and maybe highlighting the labels of the points that are clamped in
+from outside the grid.
+
 CelloMap was originally written from scratch by Jussi Piitulainen
 (jpiitula) in April 2017, out of general interest and for use in a
-certain computational platform. It is made available as Free Software,
-as defined by the Free Software Foundation, under a copyleft license.
-((Details still missing.))
+certain computational platform.
 
-Two improvements are planned: simple random sampling of the data (in
-the map or in the cells) to reduce clutter, and possibly highlighting
-the labels of the points that are clamped in from outside the grid.
+CelloMap is made available as Free Software, with the Python script
+under GPL 3.0 or later (GPLv3+), and the JavaScript code that is
+embedded in the result under the Lesser GPL 3.0 or later (LGPLv3+).
+These licenses do not cover the dataset that is also embedded in the
+resulting HTML. Note that the covered script is embedded in the HTML
+as source code, which makes it particularly easy to provide the source
+code to any recipient of the page: they have it.
