@@ -1,10 +1,12 @@
 // @license magnet:?xt=urn:btih:0ef1b8170b3b615170ff270def6427c317705f85&dn=lgpl-3.0.txt LGPL-v3
 
 // The above line, with the end tag at the end of the script,
-// identifies the license of this script to LibreJS as LGPL 3.0
+// identifies the license of this script to LibreJS as the GNU Lesser
+// General Public License (LGPL), version 3.0 of the License.
 // (https://www.gnu.org/software/librejs/free-your-javascript.html).
+
 // Note that the necessary document_data object which CelloMap also
-// embeds in the page is "trivial" when considered as code.
+// embeds in the HTML page is "trivial" when considered as code.
 
 // attach itself in certain nodes of the document object
 

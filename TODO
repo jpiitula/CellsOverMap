@@ -7,10 +7,6 @@ o [jpiitula] Check map region limits
    Reject unless min before max, maybe warn if much data is outside
    specified range (allowing options so can happen).
 
-o [jpiitula] Assign a license to the software
-   Thinking of AGPL, but there was something about JavaScript
-   specifically. Possible a Lesser AGPL would be good enough.
-
 o [jpiitula] Implement sampling controls
    To reduce the amount of visible data. Should work by CSS. Most
    coordinate actions would simply reveal all points again,

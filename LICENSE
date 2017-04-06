@@ -1,0 +1,14 @@
+CelloMap as a whole is covered by the GNU General Public License,
+version 3.0 or later. See the file COPYING.
+
+The JavaScript code is covered by the GNU Lesser General Public
+License, version 3.0 or later. See COPYING and COPYING.LESSER.
+
+The author is not sure about the related HTML and CSS code. Those are,
+however, relatively trivial, and not interesting without the script.
+
+The licenses are not intended to cover the dataset that is also
+included in JavaScript form in the resulting HTML page. But is a
+dataset even subject to a copyright? When it most likely is the output
+of a program? Everything is so complicated when everything must have
+an owner.
