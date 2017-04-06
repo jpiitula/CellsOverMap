@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cells over Map 0.1</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h1>Cells over Map</h1>
+    <noscript>
+      The table on this page would be created by a script.
+    </noscript>
+    <table id="area" style="display:none;">
+      <tr>
+	<td><span class="math">x</span> mid &amp; width</td>
+	<td><input id="midx" type="range" min="-3.455" max="14.485" step="any"></td>
+	<td><input id="widx" type="range" min="2.2425" max="15.697500000000002" step="any"></td>
+      </tr>
+      <tr>
+	<td><span class="math">y</span> mid &amp; width</td>
+	<td><input id="midy" type="range" min="-0.2899999999999996" max="13.43" step="any"></td>
+	<td><input id="widy" type="range" min="1.7149999999999999" max="12.004999999999999" step="any"></td>
+      </tr>
+      <tr>
+	<td><span class="math">m × n</span></td>
+	<td><input id="rows" type="range" min="1", max="9" value="2"></td>
+	<td><input id="cols" type="range" min="1", max="9" value="3"></td>
+      </tr>
+    </table>
+
+    <div> <!-- may acquire height and width -->
+      <table id="view" style="display:none;">
+	<!-- generate an initial number of clusters (rows × columns) but
+	     make it manipulable so the cells fill programmatically -->
+	<caption>
+	  <span id="down">↓ <span class="math">x ∼ 1, ..., m</span></span>
+	  <span><span class="math">y ~ 1, ..., n</span> →</span>
+	</caption>
+	<tbody></tbody>
+      </table>
+    </div>
+    <table id="info">
+      <tbody>
+	<tr>
+	  <td id="meta1"></td>
+	  <td id="meta2"></td>
+	</tr>
+      </tbody>
+    </table>
+  </body>
+  <script>
+    // data points initially in one cell (one row, one column)
+    // but the shape is reset already before table is filled
+    var document_data = [ [ [
+["yksi", 1.2, 4.31, {"syllables": "2", "vowels": "2"}],
+["kaksi", 2.15, 5.7, {"syllables": "2"}],
+["kolme", 3.14, 5.0, {"syllables": "2", "pi": "close"}],
+["neljä", 4.15, 5.105, {"ascii": "no", "vowels": "2"}],
+["viisi", 5.0, 5.0, {"vowels": "3"}],
+["kuusi", 6.28, 5.5, {"tau": "close"}],
+["seitsemän", 7.0, 9.11, {"long": "yes"}],
+["kahdeksan", 8.01, 9.8, {"long": "yes"}],
+["uno", 1.03, 3.4, {"lang": "español"}],
+["dos", 2.1, 3.14, {"lang": "español"}],
+["tres", 3.14, 4.1, {}],
+["cuattro", 4.4, 7.7, {}],
+["cinco", 5.4, 5.0, {}],
+["seis", 6.28, 4.15926, {}],
+["siete", 7.04, 5.2, {}],
+["ocho", 8.9, 4.1, {}],
+["nueve", 9.0, 5.0, {}]
+    ] ] ];
+  </script>
+  <style>
+h1 {
+    display: inline;
+    padding-right: 1ex;
+}
+
+.math { font-style: italic; }
+
+table#area {
+    display: inline;
+    text-align: right;
+}
+
+table#view { /* not sure if sizes on table and td have any effect */
+    table-layout: fixed;
+    max-width: 50em;
+    overflow: scroll;
+}
+
+table#view caption {
+    text-align: left;
+    /* color: gray; */
+}
+
+#down { padding-right: 2em; }
+
+table#view td {
+    border: 2px solid;
+    height: 5em;
+    width: 10em;
+    overflow: hidden;
+}
+
+table#info { display: inline; } /* um, why */
+
+table#info td {
+    border: 2px solid;
+    height: 5em;
+    width: 10em;
+    overflow: hidden;
+}
+
+ul { /* table#view cells contain these */
+    margin: 0;
+    padding: 1ex;
+    height: 5em; /* does this force fixed height? it does! */
+    width: 5em; /* this seems to force fixed-width table cells! */
+    overflow: auto;
+}
+
+li {
+    list-style: none;
+}
+
+dl { /* info boxes contain these */
+    margin: 0;
+    height: 5em;
+    width: 20em;
+    overflow: auto;
+}
+
+dt label {
+    font-weight: bold;
+}
+
+dt, dd {
+    display: inline;
+    margin-left: 0; /* this removed whitespace before dd */
+}
+
+dt:first-child:after { /* item itself and its cell */
+    content: " @ ";
+}
+
+dt:after {
+    content: " = ";
+}
+
+dd:after {
+    content: "\a";
+    white-space: pre;
+}
+
+</style>
+  <script>
+// @license magnet:?xt=urn:btih:0ef1b8170b3b615170ff270def6427c317705f85&dn=lgpl-3.0.txt LGPL-v3
+
+// The above line, with the end tag at the end of the script,
+// identifies the license of this script to LibreJS as the GNU Lesser
+// General Public License (LGPL), version 3.0 of the License.
+// (https://www.gnu.org/software/librejs/free-your-javascript.html).
+
+// Note that the necessary document_data object which CelloMap also
+// embeds in the HTML page is "trivial" when considered as code.
+
+// attach itself in certain nodes of the document object
+
+// Note: self-contained! Given the global variable document_data, that
+// is, and that should be given in a previous script directly on the
+// page.
+
+// Note: x grows down, y grows right, and always have at least one
+// cell; allow no data but insist on having a cell; it's not a
+// partition anyway when cells can be empty! which they can!
+
+(function () {
+
+    // The document_data object and the view table on the page have
+    // the same shape, so that the actual item in document_data can be
+    // identified by selecting a label in a cell in a row in the view.
+
+    var view = document.getElementById("view"); // tbody
+
+    // Desired ranges are set outside script. Make sure that lenx and
+    // leny are sufficiently non-zero. Actual coordinates are clamped
+    // to the desired ranges when assiging items to cells.
+
+    var minx = 0; var maxx = 9; var lenx = maxx - minx;
+    var miny = 1; var maxy = 10; var leny = maxy - miny;
+
+    // Been being proposed as Math.clamp already.
+    function clamp(x, lo, hi) { return Math.min(Math.max(x, lo), hi); }
+
+    function reflow(data, m, n) { // reflow data in m × n cells
+        var it = [];
+        for (var r = 0 ; r < m ; ++ r) { // any less cluttered way?
+            it.push([]);
+            for (var k = 0 ; k < n ; ++ k) {
+                it[r].push([]);
+            }
+        };
+        data.forEach(function (row) {
+	    row.forEach(function (cell) {
+                cell.forEach(function (item) {
+		    var stdx = (item[1] - minx) / lenx;
+		    var stdy = (item[2] - miny) / leny;
+		    var r = clamp(Math.floor(stdx * m), 0, m - 1);
+		    var k = clamp(Math.floor(stdy * n), 0, n - 1);
+		    // console.log('min-max-len of x', minx, maxx, lenx);
+		    // console.log('min-max-len of y', miny, maxy, leny);
+		    // console.log('std x, y; r, k', stdx, stdy, r, k);
+                    it[r][k].push(item); }) }) });
+        return it;
+    }
+
+    function reset() { // reset document_data from controls, then
+		       // review
+	// should also set minx, maxx, lenx, etc. from controls - ok now?
+	var midx = +document.getElementById("midx").value;
+	var widx = +document.getElementById("widx").value;
+	var midy = +document.getElementById("midy").value;
+	var widy = +document.getElementById("widy").value;
+
+	minx = midx - widx/2; maxx = midx + widx/2; lenx = maxx - minx;
+	miny = midy - widy/2; maxy = midy + widy/2; leny = maxy - miny;
+
+	var m = +document.getElementById("rows").value;
+	var n = +document.getElementById("cols").value;
+	document_data = reflow(document_data, m, n);
+	review(document_data);
+    }
+
+    function review(data) { // reset view from data
+	// replace table rows with data.length new rows of
+	// data[0].length new cells
+
+	var m = data.length;
+	var n = data[0].length;
+
+	var newbody = document.createElement("tbody");
+	data.forEach(function (row) {
+	    var tr = document.createElement("tr");
+	    row.forEach(function (cell) {
+		var td = document.createElement("td");
+		var ul = document.createElement("ul");
+		cell.forEach(function (item) {
+		    var li = document.createElement("li");
+		    li.appendChild(document.createTextNode(item[0]));
+		    ul.appendChild(li); });
+		ul.onclick = cellHandler(td);
+		td.appendChild(ul);
+		tr.appendChild(td); });
+	    newbody.appendChild(tr); })
+
+	var oldbody = view.getElementsByTagName("tbody")[0];
+	view.replaceChild(newbody, oldbody);
+    }
+
+    // when an item list is clicked, should be able to find out which
+    // actual item was clicked, given the table cell and the event;
+    // replace the dl in boxes[0] and swap the boxes[0], boxes[1].
+    function cellHandler(cell) { // hm, is that just this.parentNode?
+	return function (event) {
+	    // alert(cell);
+	    // alert(event.target);
+	    // alert([cell.parentNode.rowIndex, cell.cellIndex, event.target]);
+
+	    // apparently no way to get the index of the line but loop - what?
+	    lines = event.target.parentNode.getElementsByTagName("li");
+	    for (var j = 0 ; j < lines.length ; ++ j) {
+		if (lines[j] == event.target) {
+		    var r = cell.parentNode.rowIndex;
+		    var k = cell.cellIndex;
+		    var item = document_data[r][k][j];
+		    // console.log([r, k, j, item[0], item[1], item[2]]);
+		    var newlist = metadatalist(item, r, k);
+		    var oldlist = boxes[0].getElementsByTagName("dl")[0];
+		    var box = boxes[0]; boxes[0] = boxes[1]; boxes[1] = box;
+		    box.replaceChild(newlist, oldlist);
+		    break;
+		}
+	    }
+	}
+    }
+
+    function metadatalist(item, r, k) { // render item metadata as dl
+	var list = document.createElement("dl");
+	dataentry(list, item[0], "(" + (r + 1) + ", " + (k + 1) + ")");
+	dataentry(list, "(x,y)", "(" + item[1] + ", " + item[2] + ")");
+	for (var o in item[3]) {
+	    dataentry(list, o, item[3][o]);
+	}
+	return list;
+    }
+
+    function dataentry(list, key, value) { // extend a dl with dt=key, dd=value
+	// suppose undefined is obsolete here now that the first key has value
+	if (key !== undefined) {
+	    var dt = document.createElement("dt");
+	    var label = document.createElement("label");
+	    label.appendChild(document.createTextNode(key));
+	    dt.appendChild(label);
+	    list.appendChild(dt);
+	}
+	if (value !== undefined) {
+	    var dd = document.createElement("dd");
+	    dd.appendChild(document.createTextNode(value));
+	    list.appendChild(dd);
+	}
+    }
+
+    // these have style="display:none;" until script is allowed to run
+    document.getElementById("area").style.display = "";
+    document.getElementById("view").style.display = "";
+
+    // showing selected items (but initially showing nothing)
+    // Also: how does one make them appear side by side?
+    var boxes = [document.createElement("div"), document.createElement("div") ];
+    boxes[0].appendChild(document.createElement("dl"));
+    boxes[1].appendChild(document.createElement("dl"));
+    document.getElementById("meta1").appendChild(boxes[0]);
+    document.getElementById("meta2").appendChild(boxes[1]);
+
+    document.getElementById("rows").onchange = reset;
+    document.getElementById("cols").onchange = reset;
+    document.getElementById("midx").onchange = reset;
+    document.getElementById("widx").onchange = reset;
+    document.getElementById("midy").onchange = reset;
+    document.getElementById("widy").onchange = reset;
+    reset();
+})();
+// @license-end
+
+</script>
+</html>
+
