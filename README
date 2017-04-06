@@ -1,26 +1,37 @@
-Cells-over-Map (CelloMap for shorter, CoM for truly short) is an HTML5
-shower of a map of a planar dataset in cells.
+Cells over Map (CelloMap) uses HTML5 (HTML) to present a planar
+mapping of datapoints in rectangular cells laid over the map.
 
-A Python script wraps a JSON dataset in a self-contained HTML page
-that shows the points in a table of cells over a rectangular region of
-a map, allowing some simple interactive manipulations. Outside points
-are clamped in.
+Input is the dataset as a single JSON array, in UTF-8, in which each
+datapoint is an array containing four (4) items:
 
-Each data point consists of a UTF-8 label, two floating point
-coordinates (mapped to rows and columns in CoM), and arbitrary
-metadata as UTF-8 key:value pairs (with distinct keys).
+- a label, a string which CelloMap displays in the corresponding cell;
 
-    [
-    ["one", 1.0, 3.14, { "size" : "1", "length" : "2" }],
-    ["two", 2.1, 2.71, { "size" : "2" }]
-    ]
+- two floating point literals, which CelloMap maps to a row and a
+  column of the cell grid;
 
-The resulting page displays the labels of the points in cells in a
-table and the metadata of two user-selected points in separate info
-boxes. It also allows the user to adjust the location of the cells on
-the underlying map.
+- a mapping of arbitrary key-strings to value-strings, which CelloMap
+  can display for a selected point in a separate info box.
 
-CoM 0.1 was written from scratch over a weekend in April 2017 by Jussi
-Piitulainen, inspired by a research-seminar representation where Seppo
-Nyrkkö showed a rudimentary HTML tabulation of a SOM (a
-Self-Organizing Map).
+Output is a single HTML page that contains the dataset together with
+styling and behaviour in CSS and JavaScript:
+
+- the position of the grid of cells on the map can be adjusted, with
+  points outside the grid always clamped in;
+
+- the number of rows and columns (granularity) can be adjusted;
+
+- metadata of two selected points at a time can be displayed.
+
+The transformation of the dataset into the HTML page is carried out by
+a Python script that basically checks some properties of the input,
+computes the overall coordinates of the data, and fills a template.
+
+CelloMap was originally written from scratch by Jussi Piitulainen
+(jpiitula) in April 2017, out of general interest and for use in a
+certain computational platform. It is made available as Free Software,
+as defined by the Free Software Foundation, under a copyleft license.
+((Details still missing.))
+
+Two improvements are planned: simple random sampling of the data (in
+the map or in the cells) to reduce clutter, and possibly highlighting
+the labels of the points that are clamped in from outside the grid.
