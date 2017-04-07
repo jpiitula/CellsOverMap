@@ -1,6 +1,8 @@
 Cells over Map (CelloMap) uses HTML5 (HTML) to present a planar
 mapping of datapoints in rectangular cells laid over the map.
 
+See an example at <https://jpiitula.github.io/CellsOverMap/>.
+
 Input is the dataset as a single JSON array, in UTF-8, in which each
 datapoint is an array containing four (4) items:
 
